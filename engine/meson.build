@@ -9,4 +9,8 @@ if platform == 'linux'
 		dependency('egl'),
 		dependency('gl')
 	]
+elif platform == 'windows'
+	dependencies += [
+		dependency('gl')
+	]
 endif

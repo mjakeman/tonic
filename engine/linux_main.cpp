@@ -4,7 +4,8 @@
 #include <wayland-client.h>
 #include <wayland-egl.h>
 #include <EGL/egl.h>
-#include <GL/gl.h>
+
+#include "game.h"
 
 // Special thanks to:
 // https://github.com/eyelash/tutorials/blob/master/wayland-egl.c
@@ -97,15 +98,17 @@ int main(int argc, char **argv)
     EGLSurface egl_surface = eglCreateWindowSurface (egl_display, config, egl_window, NULL);
     eglMakeCurrent (egl_display, egl_surface, egl_surface, egl_context);
 
+    // Run game setup
+    setup ();
+
     // Run
     while (true)
     {
         // Handle events
-        wl_display_dispatch_pending(display);
+        wl_display_dispatch_pending (display);
 
-        // Clear
-        glClearColor (0.0, 1.0, 0.0, 1.0);
-        glClear (GL_COLOR_BUFFER_BIT);
+        // Next frame
+        frame ();
 
         // Finally swap buffers
         eglSwapBuffers (egl_display, egl_surface);

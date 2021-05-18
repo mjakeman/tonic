@@ -1,4 +1,4 @@
-project('traffic', 'cpp',
+project('tonic', 'cpp',
   version : '0.1',
   default_options : ['warning_level=3'])
 
@@ -7,7 +7,7 @@ dependencies = []
 subdir('engine')
 subdir('game')
 
-exe = executable('traffic', source, dependencies: dependencies,
+exe = executable('tonic', source, dependencies: dependencies,
   install : true)
 
 test('basic', exe)

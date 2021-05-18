@@ -2,4 +2,4 @@
 
 #include <stdio.h>
 
-#define PROJECT_NAME "engine3d"
+#define PROJECT_NAME "tonic"

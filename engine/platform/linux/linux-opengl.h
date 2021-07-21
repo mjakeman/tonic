@@ -20,13 +20,23 @@
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
 
-#include "platform/windows/windows-platform.h"
+#pragma once
 
-#define SUBSYSTEM WINDOWS
+#include <GL/gl.h>
 
-#include <Windows.h>
+// OpenGL Extension Headers
+#include "dist/gl/glext.h"
 
-int WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int show_code)
+#include "opengl.h"
+
+class LinuxOpenGL : public OpenGL
 {
-    return (new Win32Platform())->Run(instance, show_code);
-}
+public:
+    // No EGL extensions needed (yet)
+
+    static LinuxOpenGL *Load();
+    void RetrieveExtensions();
+
+private:
+    LinuxOpenGL() {}
+};

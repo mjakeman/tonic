@@ -9,6 +9,7 @@ class Game
 public:
     virtual void Setup() = 0;
     virtual void Frame() = 0;
+    virtual ~Game() {}
 };
 
 // You must implement this function

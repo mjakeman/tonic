@@ -27,30 +27,16 @@
 // OpenGL Extension Headers
 #include "dist/gl/glext.h"
 
-#define GLDefineFunc(Name, NAME) PFN##NAME##PROC Name = nullptr
+#include "opengl.h"
 
-class OpenGL
+class LinuxOpenGL : public OpenGL
 {
 public:
-    GLDefineFunc(glCreateShader, GLCREATESHADER);
-    GLDefineFunc(glShaderSource, GLSHADERSOURCE);
-    GLDefineFunc(glCompileShader, GLCOMPILESHADER);
-    GLDefineFunc(glGetShaderiv, GLGETSHADERIV);
-    GLDefineFunc(glGetShaderInfoLog, GLGETSHADERINFOLOG);
-    GLDefineFunc(glCreateProgram, GLCREATEPROGRAM);
-    GLDefineFunc(glAttachShader, GLATTACHSHADER);
-    GLDefineFunc(glLinkProgram, GLLINKPROGRAM);
-    GLDefineFunc(glGetProgramiv, GLGETPROGRAMIV);
-    GLDefineFunc(glGetProgramInfoLog, GLGETPROGRAMINFOLOG);
-    GLDefineFunc(glDeleteShader, GLDELETESHADER);
-    GLDefineFunc(glGenVertexArrays, GLGENVERTEXARRAYS);
-    GLDefineFunc(glGenBuffers, GLGENBUFFERS);
-    GLDefineFunc(glBindVertexArray, GLBINDVERTEXARRAY);
-    GLDefineFunc(glBindBuffer, GLBINDBUFFER);
-    GLDefineFunc(glBufferData, GLBUFFERDATA);
-    GLDefineFunc(glVertexAttribPointer, GLVERTEXATTRIBPOINTER);
-    GLDefineFunc(glEnableVertexAttribArray, GLENABLEVERTEXATTRIBARRAY);
-    GLDefineFunc(glUseProgram, GLUSEPROGRAM);
-protected:
-    OpenGL() {}
+    // No EGL extensions needed (yet)
+
+    static LinuxOpenGL *Load();
+    void RetrieveExtensions();
+
+private:
+    LinuxOpenGL() {}
 };

@@ -29,7 +29,6 @@
 // See the following article for an overview
 // https://mariuszbartosik.com/opengl-4-x-initialization-in-windows-without-a-framework/
 
-// Returns 0 if successful, 1 if unsuccessful
 Win32OpenGL *Win32OpenGL::Load()
 {
     // In order to query opengl for extensions, we already need

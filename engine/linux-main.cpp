@@ -8,6 +8,8 @@
 
 #include "game.h"
 
+#include "linux-opengl.h"
+
 // Special thanks to:
 // https://github.com/eyelash/tutorials/blob/master/wayland-egl.c
 // For setting up an EGL context on Wayland
@@ -100,7 +102,7 @@ int main(int argc, char **argv)
     eglMakeCurrent (egl_display, egl_surface, egl_surface, egl_context);
 
     // Run game setup
-    auto game = Initialize();
+    auto game = Initialize(LinuxOpenGL::Load());
     game->Setup ();
 
     // Run

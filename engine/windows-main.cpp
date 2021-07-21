@@ -27,20 +27,26 @@
 #include "internal.h"
 #include "game.h"
 
+#define SUBSYSTEM WINDOWS
+
 #include <Windows.h>
 #include <gl/GL.h>
+
+static bool running = true;
 
 LRESULT CALLBACK WindowProc(HWND handle, UINT msg, WPARAM wparam, LPARAM lparam)
 {
     LRESULT result;
     switch (msg)
     {
+    case WM_DESTROY:
+        running = false;
+        break;
+
     default:
-    {
         // Let windows handle it for us
         result = DefWindowProc(handle, msg, wparam, lparam);
         break;
-    }
     }
 
     return result;
@@ -89,7 +95,7 @@ int WinMain(HINSTANCE instance, HINSTANCE prev_instance, LPSTR cmd_line, int sho
     }
 
     // Get OpenGL Extensions
-    auto loader = OpenGLExtensionLoader::Load();
+    auto loader = OpenGL::Load();
 
     if (loader == NULL)
         return -1;
@@ -162,10 +168,10 @@ int WinMain(HINSTANCE instance, HINSTANCE prev_instance, LPSTR cmd_line, int sho
     // And, we're done!
     ShowWindow(handle, show_code);
 
-    auto game = Game::Create();
-    game->Setup ();
+    auto game = Initialize(loader);
+    game->Setup();
 
-    while (true)
+    while (running)
     {
         MSG message;
         if (PeekMessage(&message, handle, 0, 0, PM_REMOVE))
@@ -175,9 +181,9 @@ int WinMain(HINSTANCE instance, HINSTANCE prev_instance, LPSTR cmd_line, int sho
         }
 
         // Do frame code
-        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-        game->Frame ();
+        // glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+        // glClear(GL_COLOR_BUFFER_BIT);
+        game->Frame();
 
         // TODO: This uses legacy profiles
         // We want OpenGL 3+

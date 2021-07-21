@@ -100,7 +100,7 @@ int main(int argc, char **argv)
     eglMakeCurrent (egl_display, egl_surface, egl_surface, egl_context);
 
     // Run game setup
-    auto game = Game::Create();
+    auto game = Initialize();
     game->Setup ();
 
     // Run

@@ -31,28 +31,27 @@ void PrintLastError()
     LPTSTR errorText = NULL;
 
     FormatMessage(
-        FORMAT_MESSAGE_FROM_SYSTEM|
-        FORMAT_MESSAGE_ALLOCATE_BUFFER|
-        FORMAT_MESSAGE_IGNORE_INSERTS,
+        FORMAT_MESSAGE_FROM_SYSTEM |
+            FORMAT_MESSAGE_ALLOCATE_BUFFER |
+            FORMAT_MESSAGE_IGNORE_INSERTS,
         NULL,
         GetLastError(),
         MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
         errorText,
-        0, NULL
-    );
+        0, NULL);
 
-    printf ("Error Message: %s\n", errorText);
+    printf("Error Message: %s\n", errorText);
 
     LocalFree(errorText);
 }
 
 // Thanks to: https://gist.github.com/syu5-gh/eaa0018ed70836b7279b
-void Log (const char *fmt, ...)
+void Log(const char *fmt, ...)
 {
-    va_list argp; 
-    va_start(argp, fmt); 
+    va_list argp;
+    va_start(argp, fmt);
     char dbg_out[4096];
     vsprintf_s(dbg_out, fmt, argp);
-    va_end(argp); 
-    OutputDebugStringA (dbg_out);
+    va_end(argp);
+    OutputDebugStringA(dbg_out);
 }

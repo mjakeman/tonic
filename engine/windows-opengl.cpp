@@ -29,7 +29,7 @@
 // https://mariuszbartosik.com/opengl-4-x-initialization-in-windows-without-a-framework/
 
 // Returns 0 if successful, 1 if unsuccessful
-OpenGLExtensionLoader *OpenGLExtensionLoader::Load ()
+OpenGLExtensionLoader *OpenGLExtensionLoader::Load()
 {
     // In order to query opengl for extensions, we already need
     // to have an opengl context. However, we cannot change the
@@ -38,34 +38,33 @@ OpenGLExtensionLoader *OpenGLExtensionLoader::Load ()
     // those extensions later when creating the real window.
 
     const char *className = "DummyOpenGLContext";
-    HINSTANCE instance = GetModuleHandle (0);
+    HINSTANCE instance = GetModuleHandle(0);
 
     WNDCLASSEXA wcex = {};
-    wcex.cbSize        = sizeof (WNDCLASSEX);
-    wcex.style         = CS_HREDRAW|CS_VREDRAW|CS_OWNDC;
-    wcex.lpfnWndProc   = (WNDPROC) DefWindowProc;
-    wcex.hInstance     = instance;
-    wcex.hCursor       = LoadCursor(NULL, IDC_ARROW);
+    wcex.cbSize = sizeof(WNDCLASSEX);
+    wcex.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
+    wcex.lpfnWndProc = (WNDPROC)DefWindowProc;
+    wcex.hInstance = instance;
+    wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
     wcex.lpszClassName = className;
 
-    if (!RegisterClassExA (&wcex))
+    if (!RegisterClassExA(&wcex))
     {
-        Log ("Could not register window class\n");
-        PrintLastError ();
+        Log("Could not register window class\n");
+        PrintLastError();
         return NULL;
     }
 
     // Create a 'fake' window
-    HWND handle = CreateWindowExA (
+    HWND handle = CreateWindowExA(
         NULL, className, "OpenGLDummyWindow",
         WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
         CW_USEDEFAULT, CW_USEDEFAULT, 0, 0,
-        NULL, NULL, instance, NULL
-    );
-    
+        NULL, NULL, instance, NULL);
+
     if (!handle)
     {
-        Log ("Could not create window\n");
+        Log("Could not create window\n");
         PrintLastError();
         return NULL;
     }
@@ -76,30 +75,30 @@ OpenGLExtensionLoader *OpenGLExtensionLoader::Load ()
     // Choose a suitable pixel format so we can start querying
     // opengl for extensions
     PIXELFORMATDESCRIPTOR pfd = {};
-    pfd.nSize        = sizeof(pfd);
-    pfd.nVersion     = 1;
-    pfd.dwFlags      = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
-    pfd.iPixelType   = PFD_TYPE_RGBA;
-    pfd.cColorBits   = 32;
-    pfd.cAlphaBits   = 8;
-    pfd.cDepthBits   = 24;
+    pfd.nSize = sizeof(pfd);
+    pfd.nVersion = 1;
+    pfd.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
+    pfd.iPixelType = PFD_TYPE_RGBA;
+    pfd.cColorBits = 32;
+    pfd.cAlphaBits = 8;
+    pfd.cDepthBits = 24;
 
     int format = ChoosePixelFormat(device_context, &pfd);
 
     // TODO: https://www.khronos.org/opengl/wiki/Creating_an_OpenGL_Context_(WGL)#Simple_Context_Creation
     // ALSO: https://mariuszbartosik.com/opengl-4-x-initialization-in-windows-without-a-framework/
-    
+
     if (format == 0)
     {
-        Log ("Could not choose a pixel format\n");
-        PrintLastError ();
+        Log("Could not choose a pixel format\n");
+        PrintLastError();
         return NULL;
     }
 
     if (!SetPixelFormat(device_context, format, &pfd))
     {
-        Log ("Could not set pixel format\n");
-        PrintLastError ();
+        Log("Could not set pixel format\n");
+        PrintLastError();
         return NULL;
     }
 

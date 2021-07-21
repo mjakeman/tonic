@@ -23,4 +23,4 @@
 #pragma once
 
 void PrintLastError();
-void Log (const char *fmt, ...);
+void Log(const char *fmt, ...);

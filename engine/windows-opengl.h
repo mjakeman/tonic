@@ -30,12 +30,12 @@
 
 class OpenGLExtensionLoader
 {
-    public:
-        PFNWGLCHOOSEPIXELFORMATARBPROC wglChoosePixelFormatARB = NULL;
-        PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB = NULL;
+public:
+    PFNWGLCHOOSEPIXELFORMATARBPROC wglChoosePixelFormatARB = NULL;
+    PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB = NULL;
 
-        static OpenGLExtensionLoader *Load ();
+    static OpenGLExtensionLoader *Load();
 
-    private:
-        OpenGLExtensionLoader() {}
+private:
+    OpenGLExtensionLoader() {}
 };

@@ -35,12 +35,12 @@ LRESULT CALLBACK WindowProc(HWND handle, UINT msg, WPARAM wparam, LPARAM lparam)
     LRESULT result;
     switch (msg)
     {
-        default:
-        {
-            // Let windows handle it for us
-            result = DefWindowProc(handle, msg, wparam, lparam);
-            break;
-        }
+    default:
+    {
+        // Let windows handle it for us
+        result = DefWindowProc(handle, msg, wparam, lparam);
+        break;
+    }
     }
 
     return result;
@@ -48,7 +48,7 @@ LRESULT CALLBACK WindowProc(HWND handle, UINT msg, WPARAM wparam, LPARAM lparam)
 
 int WinMain(HINSTANCE instance, HINSTANCE prev_instance, LPSTR cmd_line, int show_code)
 {
-    Log ("This is project '%s' - win32.\n", PROJECT_NAME);
+    Log("This is project '%s' - win32.\n", PROJECT_NAME);
 
     const char *class_name = PROJECT_NAME;
     const char *title = PROJECT_NAME;
@@ -56,41 +56,40 @@ int WinMain(HINSTANCE instance, HINSTANCE prev_instance, LPSTR cmd_line, int sho
     int height = 600;
 
     WNDCLASSEXA wcex = {};
-    wcex.cbSize        = sizeof (WNDCLASSEXA);
-    wcex.style         = CS_HREDRAW|CS_VREDRAW|CS_OWNDC;
-	wcex.lpfnWndProc   = (WNDPROC)WindowProc;
-	wcex.cbClsExtra    = 0;
-	wcex.cbWndExtra    = 0;
-	wcex.hInstance     = instance;
-	wcex.hIcon         = LoadIcon(NULL, IDI_WINLOGO);
-	wcex.hCursor       = LoadCursor(NULL, IDC_ARROW);
-	wcex.hbrBackground = NULL;
-	wcex.lpszMenuName  = NULL;
-	wcex.lpszClassName = class_name;
+    wcex.cbSize = sizeof(WNDCLASSEXA);
+    wcex.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
+    wcex.lpfnWndProc = (WNDPROC)WindowProc;
+    wcex.cbClsExtra = 0;
+    wcex.cbWndExtra = 0;
+    wcex.hInstance = instance;
+    wcex.hIcon = LoadIcon(NULL, IDI_WINLOGO);
+    wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
+    wcex.hbrBackground = NULL;
+    wcex.lpszMenuName = NULL;
+    wcex.lpszClassName = class_name;
 
-    if (!RegisterClassExA (&wcex))
+    if (!RegisterClassExA(&wcex))
     {
-        Log ("Could not register window class\n");
-        PrintLastError ();
+        Log("Could not register window class\n");
+        PrintLastError();
         return -1;
     }
 
-    HWND handle = CreateWindowExA (
+    HWND handle = CreateWindowExA(
         NULL, class_name, title,
         WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
         CW_USEDEFAULT, CW_USEDEFAULT, width, height,
-        NULL, NULL, instance, NULL
-    );
-    
+        NULL, NULL, instance, NULL);
+
     if (!handle)
     {
-        Log ("Could not create window\n");
-        PrintLastError ();
+        Log("Could not create window\n");
+        PrintLastError();
         return -1;
     }
 
     // Get OpenGL Extensions
-    auto loader = OpenGLExtensionLoader::Load ();
+    auto loader = OpenGLExtensionLoader::Load();
 
     if (loader == NULL)
         return -1;
@@ -113,16 +112,15 @@ int WinMain(HINSTANCE instance, HINSTANCE prev_instance, LPSTR cmd_line, int sho
         WGL_STENCIL_BITS_ARB, 8,
         WGL_SAMPLE_BUFFERS_ARB, GL_TRUE,
         WGL_SAMPLES_ARB, 4,
-        0
-    };
-    
+        0};
+
     int format;
     UINT numFormats;
     bool status = loader->wglChoosePixelFormatARB(deviceContext, pixelAttribs, NULL, 1, &format, &numFormats);
-    
+
     if (status == false || numFormats == 0)
     {
-        Log ("wglChoosePixelFormatARB() failed (numFormats = %d).\n", numFormats);
+        Log("wglChoosePixelFormatARB() failed (numFormats = %d).\n", numFormats);
         return -1;
     }
 
@@ -133,8 +131,8 @@ int WinMain(HINSTANCE instance, HINSTANCE prev_instance, LPSTR cmd_line, int sho
 
     if (!SetPixelFormat(deviceContext, format, &pfd))
     {
-        Log ("Could not set pixel format\n");
-        PrintLastError ();
+        Log("Could not set pixel format\n");
+        PrintLastError();
         return -1;
     }
 
@@ -144,24 +142,23 @@ int WinMain(HINSTANCE instance, HINSTANCE prev_instance, LPSTR cmd_line, int sho
         WGL_CONTEXT_MAJOR_VERSION_ARB, major_min,
         WGL_CONTEXT_MINOR_VERSION_ARB, minor_min,
         WGL_CONTEXT_PROFILE_MASK_ARB, WGL_CONTEXT_CORE_PROFILE_BIT_ARB,
-        0
-    };
-    
+        0};
+
     // Create the context
     HGLRC glContext = loader->wglCreateContextAttribsARB(deviceContext, 0, contextAttribs);
     if (glContext == NULL)
     {
-        Log ("wglCreateContextAttribsARB() failed.\n");
+        Log("wglCreateContextAttribsARB() failed.\n");
         return -1;
     }
 
     // Make the context current
     if (!wglMakeCurrent(deviceContext, glContext))
     {
-        Log ("wglMakeCurrent() failed.\n");
+        Log("wglMakeCurrent() failed.\n");
         return -1;
     }
-    
+
     // And, we're done!
     ShowWindow(handle, show_code);
 
@@ -177,8 +174,8 @@ int WinMain(HINSTANCE instance, HINSTANCE prev_instance, LPSTR cmd_line, int sho
         }
 
         // Do frame code
-        glClearColor (1.0f, 1.0f, 1.0f, 1.0f);
-        glClear (GL_COLOR_BUFFER_BIT);
+        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
         frame();
 
         // TODO: This uses legacy profiles
@@ -194,7 +191,7 @@ int WinMain(HINSTANCE instance, HINSTANCE prev_instance, LPSTR cmd_line, int sho
         // glEnd();
         // glFlush();
 
-        SwapBuffers (deviceContext);
+        SwapBuffers(deviceContext);
     }
 
     wglMakeCurrent(NULL, NULL);

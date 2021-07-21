@@ -22,13 +22,7 @@
 
 #pragma once
 
-#ifdef _WIN32
 #include <gl/gl.h>
-#endif
-
-#ifdef __linux__
-#include <EGL/egl.h>
-#endif
 
 // OpenGL Extension Headers
 #include "dist/gl/glext.h"

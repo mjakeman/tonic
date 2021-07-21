@@ -95,7 +95,7 @@ int WinMain(HINSTANCE instance, HINSTANCE prev_instance, LPSTR cmd_line, int sho
     }
 
     // Get OpenGL Extensions
-    auto loader = OpenGL::Load();
+    auto loader = Win32OpenGL::Load();
 
     if (loader == NULL)
         return -1;

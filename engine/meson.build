@@ -1,6 +1,18 @@
 # Include target platform's entry point
 platform = host_machine.system()
-source += files([platform + '_main.cpp'])
+
+# source += files([platform + '_main.cpp'])
+if platform == 'linux'
+	source = files([
+		'linux-main.cpp'
+	])
+elif platform == 'windows'
+	source = files([
+		'windows-main.cpp',
+		'windows-opengl.cpp',
+		'windows-shared.cpp'
+	])
+endif
 
 if platform == 'linux'
 	dependencies += [

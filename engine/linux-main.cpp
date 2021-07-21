@@ -1,5 +1,6 @@
 #include "internal.h"
 
+#include <stdio.h>
 #include <cstring>
 #include <wayland-client.h>
 #include <wayland-egl.h>

@@ -24,12 +24,12 @@
 #include "windows-opengl.h"
 
 #include <Windows.h>
+#include <assert.h>
 
 // See the following article for an overview
 // https://mariuszbartosik.com/opengl-4-x-initialization-in-windows-without-a-framework/
 
-// Returns 0 if successful, 1 if unsuccessful
-OpenGLExtensionLoader *OpenGLExtensionLoader::Load()
+Win32OpenGL *Win32OpenGL::Load()
 {
     // In order to query opengl for extensions, we already need
     // to have an opengl context. However, we cannot change the
@@ -108,16 +108,57 @@ OpenGLExtensionLoader *OpenGLExtensionLoader::Load()
     HGLRC gl_context = wglCreateContext(device_context);
     wglMakeCurrent(device_context, gl_context);
 
-    // Use this context to query OpenGL Extensions
-    auto loader = new OpenGLExtensionLoader();
+    // Use this context to query OpenGL/WGL Extensions
+    auto loader = new Win32OpenGL();    
+    loader->RetrieveExtensions();
 
-    loader->wglChoosePixelFormatARB = (PFNWGLCHOOSEPIXELFORMATARBPROC)wglGetProcAddress("wglChoosePixelFormatARB");
-    loader->wglCreateContextAttribsARB = (PFNWGLCREATECONTEXTATTRIBSARBPROC)wglGetProcAddress("wglCreateContextAttribsARB");
-
+    // Cleanup
     wglMakeCurrent(NULL, NULL);
     ReleaseDC(handle, device_context);
     wglDeleteContext(gl_context);
     DestroyWindow(handle);
 
     return loader;
+}
+
+#include <stdio.h>
+
+void AssertProc(bool exp, const char *proc)
+{
+    if (!exp)
+        printf ("Failed to load opengl function '%s'.\n", proc);
+
+    assert (exp);
+}
+
+#define Win32GLGetProcAddress(Name, NAME) this->Name = (PFN##NAME##PROC) wglGetProcAddress(#Name); AssertProc(this->Name != NULL, #Name)
+
+void Win32OpenGL::RetrieveExtensions()
+{
+#pragma GCC diagnostic ignored "-Wcast-function-type"
+
+    this->wglChoosePixelFormatARB = (PFNWGLCHOOSEPIXELFORMATARBPROC)wglGetProcAddress("wglChoosePixelFormatARB");
+    this->wglCreateContextAttribsARB = (PFNWGLCREATECONTEXTATTRIBSARBPROC)wglGetProcAddress("wglCreateContextAttribsARB");
+
+    Win32GLGetProcAddress(glCreateShader, GLCREATESHADER);
+    Win32GLGetProcAddress(glShaderSource, GLSHADERSOURCE);
+    Win32GLGetProcAddress(glCompileShader, GLCOMPILESHADER);
+    Win32GLGetProcAddress(glGetShaderiv, GLGETSHADERIV);
+    Win32GLGetProcAddress(glGetShaderInfoLog, GLGETSHADERINFOLOG);
+    Win32GLGetProcAddress(glCreateProgram, GLCREATEPROGRAM);
+    Win32GLGetProcAddress(glAttachShader, GLATTACHSHADER);
+    Win32GLGetProcAddress(glLinkProgram, GLLINKPROGRAM);
+    Win32GLGetProcAddress(glGetProgramiv, GLGETPROGRAMIV);
+    Win32GLGetProcAddress(glGetProgramInfoLog, GLGETPROGRAMINFOLOG);
+    Win32GLGetProcAddress(glDeleteShader, GLDELETESHADER);
+    Win32GLGetProcAddress(glGenVertexArrays, GLGENVERTEXARRAYS);
+    Win32GLGetProcAddress(glGenBuffers, GLGENBUFFERS);
+    Win32GLGetProcAddress(glBindVertexArray, GLBINDVERTEXARRAY);
+    Win32GLGetProcAddress(glBindBuffer, GLBINDBUFFER);
+    Win32GLGetProcAddress(glBufferData, GLBUFFERDATA);
+    Win32GLGetProcAddress(glVertexAttribPointer, GLVERTEXATTRIBPOINTER);
+    Win32GLGetProcAddress(glEnableVertexAttribArray, GLENABLEVERTEXATTRIBARRAY);
+    Win32GLGetProcAddress(glUseProgram, GLUSEPROGRAM);
+
+#pragma GCC diagnostic pop
 }

@@ -20,39 +20,23 @@
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
 
-#include "windows-private.h"
+#pragma once
 
-#include <Windows.h>
-#include <stdio.h>
+#include <GL/gl.h>
 
-// Prints a human readable version of the last error
-void PrintLastError()
+// OpenGL Extension Headers
+#include "dist/gl/glext.h"
+
+#include "opengl.h"
+
+class LinuxOpenGL : public OpenGL
 {
-    LPTSTR errorText = NULL;
+public:
+    // No EGL extensions needed (yet)
 
-    FormatMessage(
-        FORMAT_MESSAGE_FROM_SYSTEM |
-            FORMAT_MESSAGE_ALLOCATE_BUFFER |
-            FORMAT_MESSAGE_IGNORE_INSERTS,
-        NULL,
-        GetLastError(),
-        MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-        errorText,
-        0, NULL);
+    static LinuxOpenGL *Load();
+    void RetrieveExtensions();
 
-    printf("Error Message: %s\n", errorText);
-
-    LocalFree(errorText);
-}
-
-// Thanks to: https://gist.github.com/syu5-gh/eaa0018ed70836b7279b
-void Log(const char *fmt, ...)
-{
-    va_list argp;
-    va_start(argp, fmt);
-    char dbg_out[4096];
-    vsprintf_s(dbg_out, fmt, argp);
-    va_end(argp);
-    // OutputDebugStringA(dbg_out);
-    printf (dbg_out);
-}
+private:
+    LinuxOpenGL() {}
+};

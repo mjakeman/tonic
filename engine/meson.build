@@ -4,7 +4,8 @@ platform = host_machine.system()
 # source += files([platform + '_main.cpp'])
 if platform == 'linux'
 	source = files([
-		'linux-main.cpp'
+		'linux-main.cpp',
+		'linux-opengl.cpp'
 	])
 elif platform == 'windows'
 	source = files([

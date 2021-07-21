@@ -52,7 +52,7 @@ LRESULT CALLBACK WindowProc(HWND handle, UINT msg, WPARAM wparam, LPARAM lparam)
     return result;
 }
 
-int WinMain(HINSTANCE instance, HINSTANCE prev_instance, LPSTR cmd_line, int show_code)
+int WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int show_code)
 {
     Log("This is project '%s' - win32.\n", PROJECT_NAME);
 
@@ -82,7 +82,7 @@ int WinMain(HINSTANCE instance, HINSTANCE prev_instance, LPSTR cmd_line, int sho
     }
 
     HWND handle = CreateWindowExA(
-        NULL, class_name, title,
+        0, class_name, title,
         WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
         CW_USEDEFAULT, CW_USEDEFAULT, width, height,
         NULL, NULL, instance, NULL);

@@ -1,7 +1,6 @@
 #pragma once
 
-// TODO: Find a cross platform way of doing this
-#include "windows-opengl.h"
+#include "opengl.h"
 
 // Global game variable
 

@@ -26,19 +26,31 @@
 
 // OpenGL Extension Headers
 #include "dist/gl/glext.h"
-#include "dist/gl/wglext.h"
 
-#include "opengl.h"
+#define GLDefineFunc(Name, NAME) PFN##NAME##PROC Name = NULL
 
-class Win32OpenGL : public OpenGL
+class OpenGL
 {
 public:
-    PFNWGLCHOOSEPIXELFORMATARBPROC wglChoosePixelFormatARB = NULL;
-    PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB = NULL;
-
-    static Win32OpenGL *Load();
-    void RetrieveExtensions();
-
-private:
-    Win32OpenGL() {}
+    GLDefineFunc(glCreateShader, GLCREATESHADER);
+    GLDefineFunc(glShaderSource, GLSHADERSOURCE);
+    GLDefineFunc(glCompileShader, GLCOMPILESHADER);
+    GLDefineFunc(glGetShaderiv, GLGETSHADERIV);
+    GLDefineFunc(glGetShaderInfoLog, GLGETSHADERINFOLOG);
+    GLDefineFunc(glCreateProgram, GLCREATEPROGRAM);
+    GLDefineFunc(glAttachShader, GLATTACHSHADER);
+    GLDefineFunc(glLinkProgram, GLLINKPROGRAM);
+    GLDefineFunc(glGetProgramiv, GLGETPROGRAMIV);
+    GLDefineFunc(glGetProgramInfoLog, GLGETPROGRAMINFOLOG);
+    GLDefineFunc(glDeleteShader, GLDELETESHADER);
+    GLDefineFunc(glGenVertexArrays, GLGENVERTEXARRAYS);
+    GLDefineFunc(glGenBuffers, GLGENBUFFERS);
+    GLDefineFunc(glBindVertexArray, GLBINDVERTEXARRAY);
+    GLDefineFunc(glBindBuffer, GLBINDBUFFER);
+    GLDefineFunc(glBufferData, GLBUFFERDATA);
+    GLDefineFunc(glVertexAttribPointer, GLVERTEXATTRIBPOINTER);
+    GLDefineFunc(glEnableVertexAttribArray, GLENABLEVERTEXATTRIBARRAY);
+    GLDefineFunc(glUseProgram, GLUSEPROGRAM);
+protected:
+    OpenGL() {}
 };

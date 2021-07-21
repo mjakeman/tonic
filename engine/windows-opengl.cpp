@@ -30,7 +30,7 @@
 // https://mariuszbartosik.com/opengl-4-x-initialization-in-windows-without-a-framework/
 
 // Returns 0 if successful, 1 if unsuccessful
-OpenGL *OpenGL::Load()
+Win32OpenGL *Win32OpenGL::Load()
 {
     // In order to query opengl for extensions, we already need
     // to have an opengl context. However, we cannot change the
@@ -109,13 +109,8 @@ OpenGL *OpenGL::Load()
     HGLRC gl_context = wglCreateContext(device_context);
     wglMakeCurrent(device_context, gl_context);
 
-    // Use this context to query WGL Extensions
-    auto loader = new OpenGL();
-
-    loader->wglChoosePixelFormatARB = (PFNWGLCHOOSEPIXELFORMATARBPROC)wglGetProcAddress("wglChoosePixelFormatARB");
-    loader->wglCreateContextAttribsARB = (PFNWGLCREATECONTEXTATTRIBSARBPROC)wglGetProcAddress("wglCreateContextAttribsARB");
-    
-    // Retrieve All OpenGl Extensions
+    // Use this context to query OpenGL/WGL Extensions
+    auto loader = new Win32OpenGL();    
     loader->RetrieveExtensions();
 
     // Cleanup
@@ -139,9 +134,12 @@ void AssertProc(bool exp, const char *proc)
 
 #define Win32GLGetProcAddress(Name, NAME) this->Name = (PFN##NAME##PROC) wglGetProcAddress(#Name); AssertProc(this->Name != NULL, #Name)
 
-void OpenGL::RetrieveExtensions()
+void Win32OpenGL::RetrieveExtensions()
 {
-    // this->glCreateShader = (PFNGLCREATESHADERPROC) wglGetProcAddress("glCreateShader");
+#pragma GCC diagnostic ignored "-Wcast-function-type"
+
+    this->wglChoosePixelFormatARB = (PFNWGLCHOOSEPIXELFORMATARBPROC)wglGetProcAddress("wglChoosePixelFormatARB");
+    this->wglCreateContextAttribsARB = (PFNWGLCREATECONTEXTATTRIBSARBPROC)wglGetProcAddress("wglCreateContextAttribsARB");
 
     Win32GLGetProcAddress(glCreateShader, GLCREATESHADER);
     Win32GLGetProcAddress(glShaderSource, GLSHADERSOURCE);
@@ -162,4 +160,6 @@ void OpenGL::RetrieveExtensions()
     Win32GLGetProcAddress(glVertexAttribPointer, GLVERTEXATTRIBPOINTER);
     Win32GLGetProcAddress(glEnableVertexAttribArray, GLENABLEVERTEXATTRIBARRAY);
     Win32GLGetProcAddress(glUseProgram, GLUSEPROGRAM);
+
+#pragma GCC diagnostic pop
 }

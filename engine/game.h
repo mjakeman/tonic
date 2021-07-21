@@ -1,6 +1,7 @@
 #pragma once
 
-#include "opengl.h"
+// TODO: Find a cross platform way of doing this
+#include "windows-opengl.h"
 
 // Global game variable
 
@@ -9,7 +10,6 @@ class Game
 public:
     virtual void Setup() = 0;
     virtual void Frame() = 0;
-    virtual ~Game() {}
 };
 
 // You must implement this function

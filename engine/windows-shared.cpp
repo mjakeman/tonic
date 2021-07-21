@@ -53,5 +53,6 @@ void Log(const char *fmt, ...)
     char dbg_out[4096];
     vsprintf_s(dbg_out, fmt, argp);
     va_end(argp);
-    OutputDebugStringA(dbg_out);
+    // OutputDebugStringA(dbg_out);
+    printf (dbg_out);
 }

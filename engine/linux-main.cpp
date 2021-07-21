@@ -100,7 +100,8 @@ int main(int argc, char **argv)
     eglMakeCurrent (egl_display, egl_surface, egl_surface, egl_context);
 
     // Run game setup
-    setup ();
+    auto game = Game::Create();
+    game->Setup ();
 
     // Run
     while (true)
@@ -109,7 +110,7 @@ int main(int argc, char **argv)
         wl_display_dispatch_pending (display);
 
         // Next frame
-        frame ();
+        game->Frame ();
 
         // Finally swap buffers
         eglSwapBuffers (egl_display, egl_surface);

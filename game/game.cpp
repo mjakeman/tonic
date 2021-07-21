@@ -2,12 +2,25 @@
 
 #include <GL/gl.h>
 
-void setup()
+class TonicGame : public Game
 {
-}
+public:
+    TonicGame()
+    {
+    }
 
-void frame()
+    void Setup()
+    {
+    }
+
+    void Frame()
+    {
+        glClearColor(0.0, 1.0, 0.0, 1.0);
+        glClear(GL_COLOR_BUFFER_BIT);
+    }
+};
+
+Game *Game::Create()
 {
-    glClearColor(0.0, 1.0, 0.0, 1.0);
-    glClear(GL_COLOR_BUFFER_BIT);
+    return new TonicGame();   
 }

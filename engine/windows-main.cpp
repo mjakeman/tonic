@@ -162,7 +162,8 @@ int WinMain(HINSTANCE instance, HINSTANCE prev_instance, LPSTR cmd_line, int sho
     // And, we're done!
     ShowWindow(handle, show_code);
 
-    setup();
+    auto game = Game::Create();
+    game->Setup ();
 
     while (true)
     {
@@ -176,7 +177,7 @@ int WinMain(HINSTANCE instance, HINSTANCE prev_instance, LPSTR cmd_line, int sho
         // Do frame code
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-        frame();
+        game->Frame ();
 
         // TODO: This uses legacy profiles
         // We want OpenGL 3+

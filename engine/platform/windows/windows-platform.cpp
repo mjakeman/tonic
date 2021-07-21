@@ -24,7 +24,7 @@
  */
 
 #include "windows-private.h"
-
+#include "windows-platform.h"
 #include "windows-opengl.h"
 
 #include "../../internal.h"
@@ -32,12 +32,11 @@
 
 #define SUBSYSTEM WINDOWS
 
-#include <Windows.h>
 #include <gl/GL.h>
 
 static bool running = true;
 
-LRESULT CALLBACK Win32Platform::WindowProc(HWND handle, UINT msg, WPARAM wparam, LPARAM lparam)
+static LRESULT CALLBACK WindowProc(HWND handle, UINT msg, WPARAM wparam, LPARAM lparam)
 {
     LRESULT result = 0;
     switch (msg)
@@ -67,7 +66,7 @@ LRESULT CALLBACK Win32Platform::WindowProc(HWND handle, UINT msg, WPARAM wparam,
     return result;
 }
 
-int Win32Platform::Run()
+int Win32Platform::Run(HINSTANCE instance, int show_code)
 {
     Log("This is project '%s' - win32.\n", PROJECT_NAME);
 

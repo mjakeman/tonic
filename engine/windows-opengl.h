@@ -25,8 +25,8 @@
 #include <gl/gl.h>
 
 // OpenGL Extension Headers
-#include "platform/gl/glext.h"
-#include "platform/gl/wglext.h"
+#include "dist/gl/glext.h"
+#include "dist/gl/wglext.h"
 
 class OpenGLExtensionLoader
 {

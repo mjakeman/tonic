@@ -22,12 +22,12 @@
 
 #pragma once
 
-#include <gl/gl.h>
+#include <GL/gl.h>
 
 // OpenGL Extension Headers
 #include "dist/gl/glext.h"
 
-#define GLDefineFunc(Name, NAME) PFN##NAME##PROC Name = NULL
+#define GLDefineFunc(Name, NAME) PFN##NAME##PROC Name = nullptr
 
 class OpenGL
 {

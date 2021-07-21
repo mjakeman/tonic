@@ -36,17 +36,29 @@ static bool running = true;
 
 LRESULT CALLBACK WindowProc(HWND handle, UINT msg, WPARAM wparam, LPARAM lparam)
 {
-    LRESULT result;
+    LRESULT result = 0;
     switch (msg)
     {
     case WM_DESTROY:
+    {
         running = false;
         break;
+    }
+
+    case WM_SIZE:
+    {
+        UINT width = LOWORD(lparam);
+        UINT height = HIWORD(lparam);
+        glViewport(0, 0, width, height);
+        break;
+    }
 
     default:
+    {
         // Let windows handle it for us
         result = DefWindowProc(handle, msg, wparam, lparam);
         break;
+    }
     }
 
     return result;

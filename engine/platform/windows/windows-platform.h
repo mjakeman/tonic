@@ -25,7 +25,10 @@
 
 #include "../../platform.h"
 
+#include <Windows.h>
+
 class Win32Platform : Platform
 {
-    int Run();
+public:
+    int Run(HINSTANCE instance, int show_code);
 };

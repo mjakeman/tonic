@@ -24,7 +24,7 @@
 
 #include <Windows.h>
 
-int WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
+int WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int show_code)
 {
-    return new Win32Platform()->Run();
+    return (new Win32Platform())->Run(instance, show_code);
 }

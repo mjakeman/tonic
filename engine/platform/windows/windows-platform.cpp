@@ -66,6 +66,28 @@ static LRESULT CALLBACK WindowProc(HWND handle, UINT msg, WPARAM wparam, LPARAM 
     return result;
 }
 
+// TODO: Rewrite using win32 APIs
+#include <string>
+#include <fstream>
+#include <limits>
+#include <stdexcept>
+
+std::string Win32Platform::ReadFileToString (const std::string& path)
+{
+    std::ifstream infile(path);
+    if (infile.fail()) {
+        Log ("Unable to open file at path: '%s'\n", path.c_str());
+        return NULL;
+    }
+    infile.ignore(std::numeric_limits<std::streamsize>::max());
+    std::streamsize size = infile.gcount();
+    infile.clear();
+    infile.seekg(0, infile.beg);
+    std::string contents(size, ' ');
+    infile.read(&contents[0], size);
+    return contents;
+}
+
 int Win32Platform::Run(HINSTANCE instance, int show_code)
 {
     Log("This is project '%s' - win32.\n", PROJECT_NAME);
@@ -183,6 +205,7 @@ int Win32Platform::Run(HINSTANCE instance, int show_code)
     ShowWindow(handle, show_code);
 
     auto game = Initialize(loader);
+    game->platform = this;
     game->Setup();
 
     while (running)

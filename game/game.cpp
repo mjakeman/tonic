@@ -1,21 +1,7 @@
 #include "game.h"
 
 #include <iostream>
-
 #include <assert.h>
-
-const char *vertexShaderSource = "#version 330 core\n"
-    "layout (location = 0) in vec3 aPos;\n"
-    "void main()\n"
-    "{\n"
-    "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-    "}\0";
-const char *fragmentShaderSource = "#version 330 core\n"
-    "out vec4 FragColor;\n"
-    "void main()\n"
-    "{\n"
-    "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-    "}\n\0";
 
 class TonicGame : public Game
 {
@@ -32,6 +18,14 @@ public:
 
     void Setup()
     {
+        std::string vertexShaderStr = platform->ReadFileToString("/share/tonic/shader.vert");
+        const char* vertexShaderSource = vertexShaderStr.c_str();
+
+        std::string fragmentShaderStr = platform->ReadFileToString("/share/tonic/shader.frag");
+        const char* fragmentShaderSource = fragmentShaderStr.c_str();
+        
+        // printf("%s\n", fragmentShaderSource);
+
         // build and compile our shader program
         // ------------------------------------
         // vertex shader
@@ -101,7 +95,7 @@ public:
 
     void Frame()
     {
-        glClearColor(0.0, 1.0, 0.0, 1.0);
+        glClearColor(0.0, 17.0f/256, 43.0f/256, 1.0);
         glClear(GL_COLOR_BUFFER_BIT);
 
         gl->glUseProgram(shaderProgram);

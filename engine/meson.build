@@ -3,6 +3,7 @@ platform = host_machine.system()
 
 source += files([platform + '-main.cpp'])
 
+subdir('data')
 subdir('platform')
 
 if platform == 'linux'

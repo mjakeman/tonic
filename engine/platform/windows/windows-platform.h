@@ -31,4 +31,5 @@ class Win32Platform : Platform
 {
 public:
     int Run(HINSTANCE instance, int show_code);
+    std::string ReadFileToString (const std::string& path) override; 
 };

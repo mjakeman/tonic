@@ -97,12 +97,12 @@ public:
         gl->glBindVertexArray(0);
     }
 
-    void Frame()
+    void Frame(float deltaTime)
     {
         glClearColor(0.0, 17.0f/256, 43.0f/256, 1.0);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        timeValue += 0.001f;
+        timeValue += deltaTime;
         float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
         int vertexColorLocation = gl->glGetUniformLocation(shaderProgram, "ourColor");
         gl->glUseProgram(shaderProgram);

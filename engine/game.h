@@ -9,7 +9,7 @@ class Game
 {
 public:
     virtual void Setup() = 0;
-    virtual void Frame() = 0;
+    virtual void Frame(float deltaTime) = 0;
     virtual ~Game() {}
 
     Platform *platform;

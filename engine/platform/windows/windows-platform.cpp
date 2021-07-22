@@ -208,6 +208,12 @@ int Win32Platform::Run(HINSTANCE instance, int show_code)
     game->platform = this;
     game->Setup();
 
+    LARGE_INTEGER prevFrameTime, frequency;
+    QueryPerformanceFrequency(&frequency);
+    QueryPerformanceCounter(&prevFrameTime);
+
+    float deltaTime;
+
     while (running)
     {
         MSG message;
@@ -220,20 +226,20 @@ int Win32Platform::Run(HINSTANCE instance, int show_code)
         // Do frame code
         // glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         // glClear(GL_COLOR_BUFFER_BIT);
-        game->Frame();
+        game->Frame(deltaTime);
 
-        // TODO: This uses legacy profiles
-        // We want OpenGL 3+
-        // glClear(GL_COLOR_BUFFER_BIT);
-        // glBegin(GL_TRIANGLES);
-        // glColor3f(1.0f, 0.0f, 0.0f);
-        // glVertex2i(0,  1);
-        // glColor3f(0.0f, 1.0f, 0.0f);
-        // glVertex2i(-1, -1);
-        // glColor3f(0.0f, 0.0f, 1.0f);
-        // glVertex2i(1, -1);
-        // glEnd();
-        // glFlush();
+        // Get current frame timestamp
+        LARGE_INTEGER curFrameTime, elapsed;
+        QueryPerformanceCounter(&curFrameTime);
+
+        // Find elapsed time since last frame timestamp (convert ticks->microseconds)
+        elapsed.QuadPart = curFrameTime.QuadPart - prevFrameTime.QuadPart;
+        elapsed.QuadPart *= 1000000;
+        elapsed.QuadPart /= frequency.QuadPart;
+
+        // Update variables accordingly
+        prevFrameTime.QuadPart = curFrameTime.QuadPart;
+        deltaTime = (float)(elapsed.QuadPart / 1000000.0f); // deltaTime is in seconds
 
         SwapBuffers(deviceContext);
     }

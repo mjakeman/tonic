@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <assert.h>
+#include <math.h>
 
 class TonicGame : public Game
 {
@@ -9,6 +10,7 @@ private:
     OpenGL *gl;
     unsigned int shaderProgram;
     unsigned int VBO, VAO;
+    float timeValue = 0.0f;
 
 public:
     TonicGame(OpenGL *gl)
@@ -20,9 +22,11 @@ public:
     {
         std::string vertexShaderStr = platform->ReadFileToString("/share/tonic/shader.vert");
         const char* vertexShaderSource = vertexShaderStr.c_str();
+        // printf("%s", vertexShaderSource);
 
         std::string fragmentShaderStr = platform->ReadFileToString("/share/tonic/shader.frag");
         const char* fragmentShaderSource = fragmentShaderStr.c_str();
+        // printf("%s", fragmentShaderSource);
         
         // printf("%s\n", fragmentShaderSource);
 
@@ -98,7 +102,12 @@ public:
         glClearColor(0.0, 17.0f/256, 43.0f/256, 1.0);
         glClear(GL_COLOR_BUFFER_BIT);
 
+        timeValue += 0.001f;
+        float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
+        int vertexColorLocation = gl->glGetUniformLocation(shaderProgram, "ourColor");
         gl->glUseProgram(shaderProgram);
+        gl->glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
+
         gl->glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
         glDrawArrays(GL_TRIANGLES, 0, 3);
         // glBindVertexArray(0); // no need to unbind it every time 

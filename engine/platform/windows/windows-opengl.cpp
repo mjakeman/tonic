@@ -159,6 +159,8 @@ void Win32OpenGL::RetrieveExtensions()
     Win32GLGetProcAddress(glVertexAttribPointer, GLVERTEXATTRIBPOINTER);
     Win32GLGetProcAddress(glEnableVertexAttribArray, GLENABLEVERTEXATTRIBARRAY);
     Win32GLGetProcAddress(glUseProgram, GLUSEPROGRAM);
+    Win32GLGetProcAddress(glGetUniformLocation, GLGETUNIFORMLOCATION);
+    Win32GLGetProcAddress(glUniform4f, GLUNIFORM4F);
 
 #pragma GCC diagnostic pop
 }

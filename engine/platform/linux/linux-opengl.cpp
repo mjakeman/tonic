@@ -69,6 +69,8 @@ void LinuxOpenGL::RetrieveExtensions()
     LinuxGLGetProcAddress(glVertexAttribPointer, GLVERTEXATTRIBPOINTER);
     LinuxGLGetProcAddress(glEnableVertexAttribArray, GLENABLEVERTEXATTRIBARRAY);
     LinuxGLGetProcAddress(glUseProgram, GLUSEPROGRAM);
+    LinuxGLGetProcAddress(glGetUniformLocation, GLGETUNIFORMLOCATION);
+    LinuxGLGetProcAddress(glUniform4f, GLUNIFORM4F);
 
 #pragma GCC diagnostic pop
 }

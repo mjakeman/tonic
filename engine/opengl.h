@@ -51,6 +51,8 @@ public:
     GLDefineFunc(glVertexAttribPointer, GLVERTEXATTRIBPOINTER);
     GLDefineFunc(glEnableVertexAttribArray, GLENABLEVERTEXATTRIBARRAY);
     GLDefineFunc(glUseProgram, GLUSEPROGRAM);
+    GLDefineFunc(glGetUniformLocation, GLGETUNIFORMLOCATION);
+    GLDefineFunc(glUniform4f, GLUNIFORM4F);
 protected:
     OpenGL() {}
 };

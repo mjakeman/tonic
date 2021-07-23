@@ -93,7 +93,7 @@ void Win32Platform::Log(const char *fmt, ...)
 {
     va_list args;
     va_start(args, fmt);
-    Print (fmt, args);
+    Printv (fmt, args);
     va_end(args);
 }
 

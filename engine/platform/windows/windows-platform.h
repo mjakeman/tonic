@@ -26,6 +26,7 @@
 #include "../../platform.h"
 
 #include <Windows.h>
+#include <stdio.h>
 
 class Win32Platform : Platform
 {

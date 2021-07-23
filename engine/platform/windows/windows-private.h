@@ -22,5 +22,8 @@
 
 #pragma once
 
+#include <cstdarg>
+
 void PrintLastError();
 void Print(const char *fmt, ...);
+void Printv(const char *fmt, va_list args);

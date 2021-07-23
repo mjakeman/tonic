@@ -71,6 +71,8 @@ void LinuxOpenGL::RetrieveExtensions()
     LinuxGLGetProcAddress(glUseProgram, GLUSEPROGRAM);
     LinuxGLGetProcAddress(glGetUniformLocation, GLGETUNIFORMLOCATION);
     LinuxGLGetProcAddress(glUniform4f, GLUNIFORM4F);
+    LinuxGLGetProcAddress(glUniform1f, GLUNIFORM1F);
+    LinuxGLGetProcAddress(glUniform1i, GLUNIFORM1I);
 
 #pragma GCC diagnostic pop
 }

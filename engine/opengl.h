@@ -53,6 +53,8 @@ public:
     GLDefineFunc(glUseProgram, GLUSEPROGRAM);
     GLDefineFunc(glGetUniformLocation, GLGETUNIFORMLOCATION);
     GLDefineFunc(glUniform4f, GLUNIFORM4F);
+    GLDefineFunc(glUniform1f, GLUNIFORM1F);
+    GLDefineFunc(glUniform1i, GLUNIFORM1I);
 protected:
     OpenGL() {}
 };

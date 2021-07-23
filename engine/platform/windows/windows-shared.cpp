@@ -46,7 +46,7 @@ void PrintLastError()
 }
 
 // Thanks to: https://gist.github.com/syu5-gh/eaa0018ed70836b7279b
-void Log(const char *fmt, ...)
+void Print(const char *fmt, ...)
 {
     va_list argp;
     va_start(argp, fmt);

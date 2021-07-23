@@ -88,6 +88,15 @@ std::string Win32Platform::ReadFileToString (const std::string& path)
     return contents;
 }
 
+// Wrap logging so the Game can use it
+void Win32Platform::Log(const char *fmt, ...)
+{
+    va_list args;
+    va_start(args, fmt);
+    Print (fmt, args);
+    va_end(args);
+}
+
 int Win32Platform::Run(HINSTANCE instance, int show_code)
 {
     Log("This is project '%s' - win32.\n", PROJECT_NAME);

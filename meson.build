@@ -6,6 +6,7 @@ inc_dir = include_directories('engine')
 
 source = []
 dependencies = []
+subdir('data')
 subdir('engine')
 subdir('game')
 

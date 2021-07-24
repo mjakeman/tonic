@@ -50,7 +50,7 @@ Win32OpenGL *Win32OpenGL::Load()
 
     if (!RegisterClassExA(&wcex))
     {
-        Log("Could not register window class\n");
+        Print("Could not register window class\n");
         PrintLastError();
         return NULL;
     }
@@ -64,7 +64,7 @@ Win32OpenGL *Win32OpenGL::Load()
 
     if (!handle)
     {
-        Log("Could not create window\n");
+        Print("Could not create window\n");
         PrintLastError();
         return NULL;
     }
@@ -90,14 +90,14 @@ Win32OpenGL *Win32OpenGL::Load()
 
     if (format == 0)
     {
-        Log("Could not choose a pixel format\n");
+        Print("Could not choose a pixel format\n");
         PrintLastError();
         return NULL;
     }
 
     if (!SetPixelFormat(device_context, format, &pfd))
     {
-        Log("Could not set pixel format\n");
+        Print("Could not set pixel format\n");
         PrintLastError();
         return NULL;
     }
@@ -159,6 +159,10 @@ void Win32OpenGL::RetrieveExtensions()
     Win32GLGetProcAddress(glVertexAttribPointer, GLVERTEXATTRIBPOINTER);
     Win32GLGetProcAddress(glEnableVertexAttribArray, GLENABLEVERTEXATTRIBARRAY);
     Win32GLGetProcAddress(glUseProgram, GLUSEPROGRAM);
+    Win32GLGetProcAddress(glGetUniformLocation, GLGETUNIFORMLOCATION);
+    Win32GLGetProcAddress(glUniform4f, GLUNIFORM4F);
+    Win32GLGetProcAddress(glUniform1f, GLUNIFORM1F);
+    Win32GLGetProcAddress(glUniform1i, GLUNIFORM1I);
 
 #pragma GCC diagnostic pop
 }

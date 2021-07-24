@@ -22,8 +22,6 @@
 
 #include "platform/windows/windows-platform.h"
 
-#define SUBSYSTEM WINDOWS
-
 #include <Windows.h>
 
 int WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int show_code)

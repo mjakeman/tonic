@@ -66,6 +66,37 @@ static LRESULT CALLBACK WindowProc(HWND handle, UINT msg, WPARAM wparam, LPARAM 
     return result;
 }
 
+// TODO: Rewrite using win32 APIs
+#include <string>
+#include <fstream>
+#include <limits>
+#include <stdexcept>
+
+std::string Win32Platform::ReadFileToString (const std::string& path)
+{
+    std::ifstream infile(path);
+    if (infile.fail()) {
+        Log ("Unable to open file at path: '%s'\n", path.c_str());
+        return NULL;
+    }
+    infile.ignore(std::numeric_limits<std::streamsize>::max());
+    std::streamsize size = infile.gcount();
+    infile.clear();
+    infile.seekg(0, infile.beg);
+    std::string contents(size, ' ');
+    infile.read(&contents[0], size);
+    return contents;
+}
+
+// Wrap logging so the Game can use it
+void Win32Platform::Log(const char *fmt, ...)
+{
+    va_list args;
+    va_start(args, fmt);
+    Printv (fmt, args);
+    va_end(args);
+}
+
 int Win32Platform::Run(HINSTANCE instance, int show_code)
 {
     Log("This is project '%s' - win32.\n", PROJECT_NAME);
@@ -183,7 +214,14 @@ int Win32Platform::Run(HINSTANCE instance, int show_code)
     ShowWindow(handle, show_code);
 
     auto game = Initialize(loader);
+    game->platform = this;
     game->Setup();
+
+    LARGE_INTEGER prevFrameTime, frequency;
+    QueryPerformanceFrequency(&frequency);
+    QueryPerformanceCounter(&prevFrameTime);
+
+    float deltaTime = 0.0f;
 
     while (running)
     {
@@ -197,20 +235,20 @@ int Win32Platform::Run(HINSTANCE instance, int show_code)
         // Do frame code
         // glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         // glClear(GL_COLOR_BUFFER_BIT);
-        game->Frame();
+        game->Frame(deltaTime);
 
-        // TODO: This uses legacy profiles
-        // We want OpenGL 3+
-        // glClear(GL_COLOR_BUFFER_BIT);
-        // glBegin(GL_TRIANGLES);
-        // glColor3f(1.0f, 0.0f, 0.0f);
-        // glVertex2i(0,  1);
-        // glColor3f(0.0f, 1.0f, 0.0f);
-        // glVertex2i(-1, -1);
-        // glColor3f(0.0f, 0.0f, 1.0f);
-        // glVertex2i(1, -1);
-        // glEnd();
-        // glFlush();
+        // Get current frame timestamp
+        LARGE_INTEGER curFrameTime, elapsed;
+        QueryPerformanceCounter(&curFrameTime);
+
+        // Find elapsed time since last frame timestamp (convert ticks->microseconds)
+        elapsed.QuadPart = curFrameTime.QuadPart - prevFrameTime.QuadPart;
+        elapsed.QuadPart *= 1000000;
+        elapsed.QuadPart /= frequency.QuadPart;
+
+        // Update variables accordingly
+        prevFrameTime.QuadPart = curFrameTime.QuadPart;
+        deltaTime = (float)(elapsed.QuadPart / 1000000.0f); // deltaTime is in seconds
 
         SwapBuffers(deviceContext);
     }

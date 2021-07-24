@@ -45,14 +45,19 @@ void PrintLastError()
     LocalFree(errorText);
 }
 
+void Printv(const char *fmt, va_list args)
+{
+    char dbg_out[4096];
+    vsprintf_s(dbg_out, fmt, args);
+    // OutputDebugStringA(dbg_out);
+    printf (dbg_out);
+}
+
 // Thanks to: https://gist.github.com/syu5-gh/eaa0018ed70836b7279b
-void Log(const char *fmt, ...)
+void Print(const char *fmt, ...)
 {
     va_list argp;
     va_start(argp, fmt);
-    char dbg_out[4096];
-    vsprintf_s(dbg_out, fmt, argp);
+    Printv(fmt, argp);
     va_end(argp);
-    // OutputDebugStringA(dbg_out);
-    printf (dbg_out);
 }

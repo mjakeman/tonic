@@ -1,3 +1,4 @@
 source += files([
-	'game.cpp'
+	'game.cpp',
+	'renderer/shader.cpp'
 ])

@@ -6,10 +6,13 @@
 #include <wayland-egl.h>
 #include <EGL/egl.h>
 
+#include <time.h>
+
 #include "game.h"
 
 #include "linux-platform.h"
 #include "linux-opengl.h"
+
 
 // Special thanks to:
 // https://github.com/eyelash/tutorials/blob/master/wayland-egl.c
@@ -57,6 +60,37 @@ shell_surface_popup_done (void *data, struct wl_shell_surface *shell_surface)
 }
 static struct wl_shell_surface_listener shell_surface_listener = {&shell_surface_ping, &shell_surface_configure, &shell_surface_popup_done};
 
+// TODO: Rewrite using linux APIs
+#include <string>
+#include <fstream>
+#include <limits>
+#include <stdexcept>
+
+std::string LinuxPlatform::ReadFileToString (const std::string& path)
+{
+    std::ifstream infile(path);
+    if (infile.fail()) {
+        Log ("Unable to open file at path: '%s'\n", path.c_str());
+        return NULL;
+    }
+    infile.ignore(std::numeric_limits<std::streamsize>::max());
+    std::streamsize size = infile.gcount();
+    infile.clear();
+    infile.seekg(0, infile.beg);
+    std::string contents(size, ' ');
+    infile.read(&contents[0], size);
+    return contents;
+}
+
+// Wrap logging so the Game can use it
+void LinuxPlatform::Log(const char *fmt, ...)
+{
+    va_list args;
+    va_start(args, fmt);
+    vprintf (fmt, args);
+    va_end(args);
+}
+
 int LinuxPlatform::Run()
 {
     printf("This is project '%s' - linux.\n", PROJECT_NAME);
@@ -101,7 +135,13 @@ int LinuxPlatform::Run()
 
     // Run game setup
     auto game = Initialize(LinuxOpenGL::Load());
+    game->platform = this;
     game->Setup ();
+
+    struct timespec prevFrameTime;
+    clock_gettime(CLOCK_MONOTONIC, &prevFrameTime);
+
+    float deltaTime = 0.0f;
 
     // Run
     while (true)
@@ -110,10 +150,22 @@ int LinuxPlatform::Run()
         wl_display_dispatch_pending (display);
 
         // Next frame
-        game->Frame ();
+        game->Frame (deltaTime);
 
         // Finally swap buffers
         eglSwapBuffers (egl_display, egl_surface);
+
+        // Get current frame timestamp
+        struct timespec curFrameTime;
+        clock_gettime(CLOCK_MONOTONIC, &curFrameTime);
+
+        // Find elapsed time since last frame timestamp (convert ticks->secs)
+        float nanosecs = (float)(curFrameTime.tv_nsec - prevFrameTime.tv_nsec);
+        float secs = (float)(curFrameTime.tv_sec - prevFrameTime.tv_sec);
+        deltaTime = secs + (nanosecs * 1e-9f);
+
+        // Update variables accordingly
+        prevFrameTime = curFrameTime;
     }
 
     // Cleanup

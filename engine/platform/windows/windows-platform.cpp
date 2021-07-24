@@ -221,7 +221,7 @@ int Win32Platform::Run(HINSTANCE instance, int show_code)
     QueryPerformanceFrequency(&frequency);
     QueryPerformanceCounter(&prevFrameTime);
 
-    float deltaTime;
+    float deltaTime = 0.0f;
 
     while (running)
     {
